@@ -1,0 +1,83 @@
+---
+import IndustryLayout from '@/layouts/IndustryLayout.astro';
+import { industries, getIndustry } from '@/data/industries';
+
+export function getStaticPaths() {
+  return industries.map((industry) => ({
+    params: { industry: industry.slug },
+    props: { industry },
+  }));
+}
+
+const { industry } = Astro.props;
+---
+
+<IndustryLayout
+  title={`Digital Marketing for ${industry.title} | Figgle Media`}
+  description={industry.description}
+  industry={{
+    title: industry.title,
+    slug: industry.slug,
+    description: industry.longDescription,
+    challenges: industry.challenges,
+    services: industry.services.map(s => ({
+      slug: s.slug,
+      title: s.title,
+      description: s.description
+    })),
+  }}
+>
+  <div class="industry-intro">
+    <p>{industry.longDescription}</p>
+  </div>
+
+  <div class="why-us">
+    <h2>Why Choose Figgle Media for {industry.title}?</h2>
+    <p>
+      We don't just do generic marketing—we specialize in the construction and home services industry.
+      That means we understand the unique challenges {industry.shortTitle.toLowerCase()} face, from seasonal
+      fluctuations to building trust with homeowners making major investments.
+    </p>
+    <p>
+      Our strategies are built specifically for your industry, targeting the keywords your customers
+      actually search for and creating content that addresses their specific concerns.
+    </p>
+  </div>
+</IndustryLayout>
+
+<style>
+  .industry-intro {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .industry-intro p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+  }
+
+  .why-us {
+    background: var(--color-bg-light);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+    border-left: 4px solid var(--color-accent-primary);
+  }
+
+  .why-us h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--color-cream);
+    margin-bottom: 1rem;
+  }
+
+  .why-us p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .why-us p:last-child {
+    margin-bottom: 0;
+  }
+</style>

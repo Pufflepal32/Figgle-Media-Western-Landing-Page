@@ -1,0 +1,225 @@
+---
+import IndustryLayout from '@/layouts/IndustryLayout.astro';
+import { industries, getIndustry, getIndustryService } from '@/data/industries';
+import { services as allServices } from '@/data/services';
+
+export function getStaticPaths() {
+  const paths: Array<{
+    params: { industry: string; service: string };
+    props: {
+      industry: typeof industries[0];
+      service: NonNullable<typeof industries[0]['services']>[0];
+      serviceDetails: typeof allServices[0] | undefined;
+    };
+  }> = [];
+
+  industries.forEach((industry) => {
+    industry.services.forEach((service) => {
+      const serviceDetails = allServices.find(s =>
+        s.slug === service.slug ||
+        (service.slug === 'web-design' && s.slug === 'web-development')
+      );
+
+      paths.push({
+        params: { industry: industry.slug, service: service.slug },
+        props: { industry, service, serviceDetails },
+      });
+    });
+  });
+
+  return paths;
+}
+
+const { industry, service, serviceDetails } = Astro.props;
+const pageTitle = service.title;
+---
+
+<IndustryLayout
+  title={`${pageTitle} | Figgle Media`}
+  description={service.description}
+  industry={{
+    title: industry.title,
+    slug: industry.slug,
+    description: service.description,
+    challenges: industry.challenges,
+    services: [],
+  }}
+  parentService={{
+    title: service.title.split(' for ')[0],
+    slug: service.slug,
+  }}
+>
+  <div class="service-industry-intro">
+    <h2>Professional {service.title.split(' for ')[0]} Built for {industry.title}</h2>
+    <p>{service.description}</p>
+
+    <p>
+      At Figgle Media, we combine our deep expertise in {service.title.split(' for ')[0].toLowerCase()} with
+      our specialized knowledge of the {industry.shortTitle.toLowerCase()} industry to deliver results that
+      generic marketing agencies simply can't match.
+    </p>
+  </div>
+
+  <div class="what-we-do">
+    <h2 class="section-title">What We <span>Deliver</span></h2>
+    <div class="deliverables-grid">
+      {serviceDetails?.features.slice(0, 6).map((feature) => (
+        <div class="deliverable">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>{feature}</span>
+        </div>
+      )) || (
+        <>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Industry-specific keyword targeting</span>
+          </div>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Competitor analysis in your market</span>
+          </div>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Content tailored to your customers</span>
+          </div>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Monthly performance reporting</span>
+          </div>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Dedicated account management</span>
+          </div>
+          <div class="deliverable">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Ongoing optimization and support</span>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+
+  <div class="related-industries">
+    <h2 class="section-title">More <span>{service.title.split(' for ')[0]}</span> for Contractors</h2>
+    <div class="related-grid">
+      {industries.filter(i => i.slug !== industry.slug).slice(0, 4).map((related) => (
+        <a href={`/industries/${related.slug}/${service.slug}`} class="related-card">
+          <h3>{service.title.split(' for ')[0]} for {related.shortTitle}</h3>
+          <span>Learn More →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</IndustryLayout>
+
+<style>
+  .service-industry-intro {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .service-industry-intro h2 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--color-cream);
+    margin-bottom: 1rem;
+  }
+
+  .service-industry-intro p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    margin-bottom: 1rem;
+  }
+
+  .what-we-do {
+    margin-top: var(--spacing-xl);
+  }
+
+  .deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+  }
+
+  .deliverable {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: var(--spacing-sm);
+    background: var(--color-bg-light);
+    border-radius: 4px;
+  }
+
+  .deliverable svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+  }
+
+  .deliverable span {
+    color: var(--color-cream);
+    font-size: 0.95rem;
+  }
+
+  .related-industries {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 2px solid var(--color-bg-light);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .related-card {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .related-card:hover {
+    border-color: var(--color-accent-primary);
+    transform: translateY(-3px);
+  }
+
+  .related-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .related-card span {
+    color: var(--color-accent-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+</style>

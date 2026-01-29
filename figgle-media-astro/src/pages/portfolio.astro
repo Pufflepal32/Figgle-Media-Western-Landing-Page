@@ -1,0 +1,286 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+
+const projects = [
+  {
+    title: 'Summit Roofing Co.',
+    industry: 'Roofing',
+    services: ['SEO', 'Web Design'],
+    description: 'Complete digital transformation for a family-owned roofing company, resulting in 3x increase in organic leads.',
+    results: ['285% increase in organic traffic', '3x more lead form submissions', '#1 ranking for "roof repair" in target market']
+  },
+  {
+    title: 'Precision HVAC',
+    industry: 'HVAC',
+    services: ['Local SEO', 'Google Ads'],
+    description: 'Local SEO and PPC campaign for an HVAC contractor looking to dominate their service area.',
+    results: ['450% ROI on ad spend', 'Top 3 Map Pack rankings', '60% reduction in cost-per-lead']
+  },
+  {
+    title: 'Clear Flow Plumbing',
+    industry: 'Plumbing',
+    services: ['Web Design', 'SEO', 'Social Media'],
+    description: 'Full-service digital marketing for a plumbing company expanding into new territories.',
+    results: ['New website with 4.2s faster load time', '200+ new reviews generated', 'Expanded to 3 new service areas']
+  },
+  {
+    title: 'BuildRight General Contractors',
+    industry: 'General Contractor',
+    services: ['Web Design', 'Content Marketing'],
+    description: 'Portfolio website and content strategy for a commercial general contractor.',
+    results: ['Professional portfolio showcasing 50+ projects', '40% increase in commercial inquiries', 'Featured in industry publications']
+  },
+  {
+    title: 'Greenscape Landscaping',
+    industry: 'Landscaping',
+    services: ['Social Media', 'SEO'],
+    description: 'Instagram-focused social strategy combined with local SEO for a landscaping company.',
+    results: ['5,000+ Instagram followers', '35% of leads from social media', 'Year-round booking increase']
+  },
+  {
+    title: 'Foundation Masters',
+    industry: 'Concrete',
+    services: ['SEO', 'Web Design'],
+    description: 'SEO and website redesign for a concrete contractor specializing in decorative work.',
+    results: ['First page rankings for 25+ keywords', '150% increase in quote requests', 'Showcased decorative portfolio online']
+  }
+];
+---
+
+<PageLayout
+  title="Our Work | Figgle Media Portfolio"
+  description="See the results we've achieved for construction companies, roofers, HVAC contractors, and other home service businesses. Real case studies, real results."
+  heroTitle="Our Work"
+  heroSubtitle="Real results for real construction companies. Here's how we've helped businesses like yours grow."
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Portfolio' }
+  ]}
+>
+  <section class="portfolio-section">
+    <div class="container">
+      <div class="portfolio-grid">
+        {projects.map((project, index) => (
+          <div class="portfolio-card animate-on-scroll" style={`animation-delay: ${index * 0.1}s`}>
+            <div class="portfolio-header">
+              <span class="portfolio-industry">{project.industry}</span>
+              <h3>{project.title}</h3>
+            </div>
+            <div class="portfolio-services">
+              {project.services.map((service) => (
+                <span class="service-tag">{service}</span>
+              ))}
+            </div>
+            <p class="portfolio-description">{project.description}</p>
+            <div class="portfolio-results">
+              <h4>Results</h4>
+              <ul>
+                {project.results.map((result) => (
+                  <li>{result}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Clients <span>Say</span></h2>
+
+      <div class="testimonials-grid">
+        <blockquote class="testimonial animate-on-scroll">
+          <p>"Figgle Media transformed our online presence. We went from barely showing up in search results to dominating our local market. The ROI has been incredible."</p>
+          <cite>
+            <strong>Mike R.</strong>
+            <span>Summit Roofing Co.</span>
+          </cite>
+        </blockquote>
+
+        <blockquote class="testimonial animate-on-scroll">
+          <p>"They actually understand the HVAC business. No generic marketing fluff—just strategies that work for contractors. Our phones haven't stopped ringing."</p>
+          <cite>
+            <strong>Sarah T.</strong>
+            <span>Precision HVAC</span>
+          </cite>
+        </blockquote>
+
+        <blockquote class="testimonial animate-on-scroll">
+          <p>"The website they built for us is exactly what we needed. Fast, professional, and it actually converts visitors into customers. Worth every penny."</p>
+          <cite>
+            <strong>James L.</strong>
+            <span>Clear Flow Plumbing</span>
+          </cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Want Results Like These?"
+    description="Let's discuss how we can help your construction business grow with proven digital marketing strategies."
+    buttonText="Start Your Project"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  .portfolio-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .portfolio-card {
+    background: var(--color-bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid var(--color-tan);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .portfolio-header {
+    background: var(--color-bg-dark);
+    padding: var(--spacing-md);
+  }
+
+  .portfolio-industry {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--color-accent-primary);
+    color: var(--color-cream);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .portfolio-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-cream);
+    margin: 0;
+  }
+
+  .portfolio-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-light);
+  }
+
+  .service-tag {
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg-dark);
+    color: var(--color-cream);
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+
+  .portfolio-description {
+    padding: var(--spacing-md);
+    padding-bottom: 0;
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .portfolio-results {
+    padding: var(--spacing-md);
+  }
+
+  .portfolio-results h4 {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+
+  .portfolio-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .portfolio-results li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-dark);
+    font-size: 0.95rem;
+  }
+
+  .portfolio-results li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+    font-weight: bold;
+  }
+
+  .testimonials {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-dark);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .testimonial {
+    background: var(--color-bg-light);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent-primary);
+    margin: 0;
+  }
+
+  .testimonial p {
+    color: var(--color-cream);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .testimonial cite {
+    font-style: normal;
+  }
+
+  .testimonial strong {
+    display: block;
+    color: var(--color-cream);
+    font-family: var(--font-heading);
+  }
+
+  .testimonial span {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

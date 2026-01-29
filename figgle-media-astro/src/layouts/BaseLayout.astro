@@ -1,0 +1,100 @@
+---
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import SEOHead from '@/components/seo/SEOHead.astro';
+import '@/assets/styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+}
+
+const { title, description, canonicalURL, ogImage, noIndex = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <SEOHead
+      title={title}
+      description={description}
+      canonicalURL={canonicalURL}
+      ogImage={ogImage}
+      noIndex={noIndex}
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Lora:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/logo.png">
+</head>
+<body>
+    <Header />
+    <main>
+        <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Mobile Navigation Toggle
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.querySelector('.nav-menu');
+
+      if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+          hamburger.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+          });
+        });
+      }
+
+      // Navbar Background on Scroll
+      const navbar = document.querySelector('.navbar');
+
+      function handleNavbarScroll() {
+        if (!navbar) return;
+        if (window.scrollY > 50) {
+          navbar.style.background = 'rgba(42, 31, 23, 0.98)';
+          navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+        } else {
+          navbar.style.background = 'linear-gradient(to bottom, rgba(42, 31, 23, 0.98), rgba(42, 31, 23, 0.9))';
+          navbar.style.boxShadow = 'none';
+        }
+      }
+
+      window.addEventListener('scroll', handleNavbarScroll);
+
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+import { industries } from '@/data/industries';
+---
+
+<PageLayout
+  title="Industries We Serve | Digital Marketing for Construction"
+  description="Specialized digital marketing for construction companies, roofers, HVAC contractors, plumbers, electricians, and more. We understand your industry."
+  heroTitle="Industries We Serve"
+  heroSubtitle="We specialize in digital marketing for construction and home service companies. We know your business because we focus exclusively on your industry."
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Industries' }
+  ]}
+>
+  <section class="industries-overview">
+    <div class="container">
+      <div class="industries-grid">
+        {industries.map((industry) => (
+          <a href={`/industries/${industry.slug}`} class="industry-card animate-on-scroll">
+            <div class="industry-header">
+              <h2>{industry.title}</h2>
+            </div>
+            <p class="industry-description">{industry.description}</p>
+            <div class="industry-services">
+              <span class="services-label">Services:</span>
+              <div class="service-tags">
+                {industry.services.map((service) => (
+                  <span class="service-tag">{service.title.split(' for ')[0]}</span>
+                ))}
+              </div>
+            </div>
+            <span class="industry-cta">
+              Learn More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="why-specialize">
+    <div class="container">
+      <h2 class="section-title">Why We <span>Specialize</span></h2>
+      <p class="section-subtitle">General marketing agencies don't understand your business. We do.</p>
+
+      <div class="reasons-grid">
+        <div class="reason animate-on-scroll">
+          <h3>We Know Your Customers</h3>
+          <p>Homeowners searching for contractors have specific needs and concerns. We know how to reach them and what messaging converts.</p>
+        </div>
+        <div class="reason animate-on-scroll">
+          <h3>We Know Your Competition</h3>
+          <p>We've analyzed thousands of contractor websites and marketing strategies. We know what works and what doesn't in your market.</p>
+        </div>
+        <div class="reason animate-on-scroll">
+          <h3>We Know Your Challenges</h3>
+          <p>Seasonal fluctuations, emergency calls, trust issues, price competition—we understand the unique challenges you face.</p>
+        </div>
+        <div class="reason animate-on-scroll">
+          <h3>We Know Your Goals</h3>
+          <p>More leads, better jobs, higher margins, sustainable growth. We align our strategies with what matters to your business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to Dominate Your Market?"
+    description="Let's discuss how we can help your construction business grow with marketing that actually works."
+    buttonText="Get a Free Consultation"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  .industries-overview {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .industry-card {
+    background: var(--color-bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid var(--color-tan);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .industry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-accent-primary);
+  }
+
+  .industry-header {
+    background: var(--color-bg-dark);
+    padding: var(--spacing-md);
+  }
+
+  .industry-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-cream);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .industry-description {
+    padding: var(--spacing-md);
+    padding-bottom: 0;
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .industry-services {
+    padding: var(--spacing-md);
+    padding-top: 0;
+  }
+
+  .services-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .service-tag {
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg-light);
+    color: var(--color-cream);
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+
+  .industry-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--spacing-sm);
+    background: var(--color-bg-light);
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: auto;
+  }
+
+  .industry-cta svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .industry-card:hover .industry-cta svg {
+    transform: translateX(4px);
+  }
+
+  .why-specialize {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-dark);
+  }
+
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .reason {
+    background: var(--color-bg-light);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent-primary);
+  }
+
+  .reason h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .reason p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 480px) {
+    .industries-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

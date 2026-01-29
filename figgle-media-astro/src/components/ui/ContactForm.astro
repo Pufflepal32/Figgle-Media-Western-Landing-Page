@@ -1,0 +1,184 @@
+---
+import Button from './Button.astro';
+
+export interface Props {
+  services?: Array<{ value: string; label: string }>;
+}
+
+const { services } = Astro.props;
+
+const defaultServices = [
+  { value: '', label: 'Select a service...' },
+  { value: 'seo', label: 'SEO Services' },
+  { value: 'web', label: 'Web Design & Development' },
+  { value: 'social', label: 'Social Media Marketing' },
+  { value: 'other', label: 'Other / Not Sure' }
+];
+
+const serviceOptions = services || defaultServices;
+---
+
+<form class="contact-form" id="contactForm">
+    <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required placeholder="John Wayne">
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="partner@yourranch.com">
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+    </div>
+    <div class="form-group">
+        <label for="service">What Can We Help With?</label>
+        <select id="service" name="service" required>
+            {serviceOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+            ))}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="5" required placeholder="Tell us about your business and what you're looking to achieve..."></textarea>
+    </div>
+    <Button type="submit" variant="primary" size="large">Send Message</Button>
+</form>
+
+<script>
+  const contactForm = document.getElementById('contactForm');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(contactForm as HTMLFormElement);
+      const data: Record<string, string> = {};
+      formData.forEach((value, key) => {
+        data[key] = value.toString();
+      });
+
+      if (!data.name || !data.email || !data.message) {
+        showNotification('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      const submitBtn = contactForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const originalText = submitBtn.textContent || 'Send Message';
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      // Simulate form submission - replace with actual form handler
+      setTimeout(() => {
+        showNotification('Message sent successfully! We\'ll be in touch soon.', 'success');
+        (contactForm as HTMLFormElement).reset();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }, 1500);
+    });
+  }
+
+  function showNotification(message: string, type: 'success' | 'error') {
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+      <span>${message}</span>
+      <button class="notification-close">&times;</button>
+    `;
+
+    notification.style.cssText = `
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 1rem 2rem;
+      background: ${type === 'success' ? '#4a7c4e' : '#c65d3b'};
+      color: #f5e6d3;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 10000;
+      animation: slideIn 0.3s ease;
+      font-family: 'Open Sans', sans-serif;
+    `;
+
+    document.body.appendChild(notification);
+
+    notification.querySelector('.notification-close')?.addEventListener('click', () => {
+      notification.remove();
+    });
+
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 5000);
+  }
+</script>
+
+<style>
+  .contact-form {
+    background: var(--color-bg-card);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border: 3px solid var(--color-tan);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .form-group label {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-bg-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    border: 2px solid var(--color-tan);
+    background: #fff;
+    color: var(--color-bg-dark);
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact-form :global(.btn) {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+  }
+
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+</style>

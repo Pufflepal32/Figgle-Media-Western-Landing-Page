@@ -1,0 +1,17 @@
+---
+export interface Props {
+  class?: string;
+  hatWidth?: number;
+}
+
+const { class: className, hatWidth = 20 } = Astro.props;
+---
+
+<svg class:list={['cowboy', className]} viewBox="0 0 100 150">
+    <ellipse cx="50" cy="25" rx={hatWidth} ry="8" fill="currentColor"/>
+    <ellipse cx="50" cy="30" rx="12" ry="10" fill="currentColor"/>
+    <rect x="42" y="40" width="16" height="30" fill="currentColor"/>
+    <polygon points="35,70 65,70 70,120 30,120" fill="currentColor"/>
+    <rect x="35" y="120" width="12" height="25" fill="currentColor"/>
+    <rect x="53" y="120" width="12" height="25" fill="currentColor"/>
+</svg>

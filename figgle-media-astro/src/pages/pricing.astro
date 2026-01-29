@@ -1,0 +1,351 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+
+const packages = [
+  {
+    name: 'Trailblazer',
+    description: 'For contractors just starting their digital marketing journey.',
+    price: 'Starting at $997',
+    period: '/month',
+    features: [
+      'Local SEO optimization',
+      'Google Business Profile management',
+      'Monthly performance reporting',
+      'Basic on-page SEO',
+      'Citation building',
+      'Email support'
+    ],
+    highlighted: false
+  },
+  {
+    name: 'Frontier',
+    description: 'Our most popular package for growing construction companies.',
+    price: 'Starting at $1,997',
+    period: '/month',
+    features: [
+      'Everything in Trailblazer',
+      'Content marketing (2 posts/month)',
+      'Social media management',
+      'Advanced SEO strategy',
+      'Review generation system',
+      'Monthly strategy calls',
+      'Priority support'
+    ],
+    highlighted: true
+  },
+  {
+    name: 'Homesteader',
+    description: 'Full-service marketing for contractors ready to dominate.',
+    price: 'Starting at $3,497',
+    period: '/month',
+    features: [
+      'Everything in Frontier',
+      'Content marketing (4 posts/month)',
+      'Paid advertising management',
+      'Conversion rate optimization',
+      'Competitor monitoring',
+      'Weekly strategy calls',
+      'Dedicated account manager'
+    ],
+    highlighted: false
+  }
+];
+
+const addOns = [
+  { name: 'Website Design', price: 'Starting at $3,500', description: 'Custom website built to convert visitors into leads' },
+  { name: 'Google Ads Management', price: '15% of ad spend', description: 'Managed PPC campaigns for immediate visibility' },
+  { name: 'Video Production', price: 'Starting at $1,500', description: 'Professional video content for your website and social media' },
+  { name: 'Reputation Management', price: 'Starting at $497/mo', description: 'Comprehensive review monitoring and response' }
+];
+---
+
+<PageLayout
+  title="Pricing | Figgle Media"
+  description="Transparent pricing for digital marketing services tailored to construction companies. No long-term contracts, no hidden fees."
+  heroTitle="Our Pricing"
+  heroSubtitle="Straightforward pricing with no hidden fees or long-term contracts. We earn your business every month."
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Pricing' }
+  ]}
+>
+  <section class="pricing-section">
+    <div class="container">
+      <div class="pricing-grid">
+        {packages.map((pkg) => (
+          <div class:list={['pricing-card', 'animate-on-scroll', { highlighted: pkg.highlighted }]}>
+            {pkg.highlighted && <span class="popular-badge">Most Popular</span>}
+            <div class="pricing-header">
+              <h3>{pkg.name}</h3>
+              <p class="pricing-description">{pkg.description}</p>
+            </div>
+            <div class="pricing-price">
+              <span class="price">{pkg.price}</span>
+              <span class="period">{pkg.period}</span>
+            </div>
+            <ul class="pricing-features">
+              {pkg.features.map((feature) => (
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <Button href="/contact" variant={pkg.highlighted ? 'primary' : 'secondary'}>
+              Get Started
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="addons-section">
+    <div class="container">
+      <h2 class="section-title">Add-On <span>Services</span></h2>
+      <p class="section-subtitle">Enhance your marketing with these additional services.</p>
+
+      <div class="addons-grid">
+        {addOns.map((addon) => (
+          <div class="addon-card animate-on-scroll">
+            <h3>{addon.name}</h3>
+            <span class="addon-price">{addon.price}</span>
+            <p>{addon.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <div class="container">
+      <h2 class="section-title">Common <span>Questions</span></h2>
+
+      <div class="faq-list">
+        <div class="faq-item animate-on-scroll">
+          <h3>Do you require long-term contracts?</h3>
+          <p>No. We work on a month-to-month basis because we believe in earning your business every month. You can cancel at any time with 30 days notice.</p>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <h3>What's included in the setup?</h3>
+          <p>All packages include an initial setup phase where we audit your current presence, research your competitors, and develop your customized strategy. This is included in your monthly fee.</p>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <h3>How long until I see results?</h3>
+          <p>SEO typically takes 3-6 months to show significant results. Paid advertising can generate leads within days. We'll set realistic expectations based on your specific situation during our initial consultation.</p>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <h3>Do I own my website and content?</h3>
+          <p>Absolutely. Everything we create for you belongs to you. If you ever leave, you take your website, content, ad accounts, and everything else with you.</p>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <h3>Can I upgrade or downgrade my package?</h3>
+          <p>Yes. As your needs change, you can adjust your package at any time. We'll work with you to find the right fit for your current goals and budget.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Not Sure Which Package is Right for You?"
+    description="Let's have a conversation about your goals and find the perfect solution for your business."
+    buttonText="Schedule a Free Consultation"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  .pricing-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+    align-items: start;
+  }
+
+  .pricing-card {
+    background: var(--color-bg-card);
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    border: 3px solid var(--color-tan);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pricing-card.highlighted {
+    border-color: var(--color-accent-primary);
+    transform: scale(1.02);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent-primary);
+    color: var(--color-cream);
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+  }
+
+  .pricing-header {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .pricing-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-bg-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-description {
+    color: var(--color-text-dark);
+    opacity: 0.8;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .pricing-price {
+    text-align: center;
+    padding: var(--spacing-md) 0;
+    border-top: 2px solid var(--color-tan);
+    border-bottom: 2px solid var(--color-tan);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .price {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-accent-primary);
+  }
+
+  .period {
+    color: var(--color-text-dark);
+    opacity: 0.7;
+    font-size: 0.9rem;
+  }
+
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-md) 0;
+    flex-grow: 1;
+  }
+
+  .pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-dark);
+    font-size: 0.95rem;
+  }
+
+  .pricing-features svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pricing-card :global(.btn) {
+    width: 100%;
+  }
+
+  .addons-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-dark);
+  }
+
+  .addons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .addon-card {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid var(--color-tan);
+  }
+
+  .addon-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .addon-price {
+    display: block;
+    font-family: var(--font-display);
+    color: var(--color-accent-primary);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .addon-card p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .faq-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .faq-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-item p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 992px) {
+    .pricing-card.highlighted {
+      transform: none;
+    }
+  }
+</style>

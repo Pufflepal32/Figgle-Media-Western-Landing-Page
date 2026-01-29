@@ -1,0 +1,27 @@
+---
+import CowboySilhouette from './CowboySilhouette.astro';
+import Cactus from './Cactus.astro';
+import Tumbleweed from './Tumbleweed.astro';
+---
+
+<div class="hero-landscape">
+    <svg class="landscape-svg" viewBox="0 0 1440 400" preserveAspectRatio="none">
+        <!-- Distant mountains -->
+        <path class="mountain-far" d="M0,400 L0,280 Q100,200 200,260 Q300,180 400,240 Q500,160 600,220 Q700,140 800,200 Q900,120 1000,180 Q1100,100 1200,160 Q1300,80 1440,140 L1440,400 Z"/>
+        <!-- Mid mountains -->
+        <path class="mountain-mid" d="M0,400 L0,300 Q150,220 300,280 Q450,200 600,260 Q750,180 900,240 Q1050,160 1200,220 Q1350,140 1440,200 L1440,400 Z"/>
+        <!-- Desert floor -->
+        <path class="desert-floor" d="M0,400 L0,340 Q200,320 400,340 Q600,330 800,350 Q1000,335 1200,345 Q1350,340 1440,350 L1440,400 Z"/>
+    </svg>
+
+    <div class="silhouettes">
+        <CowboySilhouette class="cowboy-1" />
+        <CowboySilhouette class="cowboy-2" hatWidth={22} />
+        <CowboySilhouette class="cowboy-3" />
+        <CowboySilhouette class="cowboy-4" hatWidth={21} />
+    </div>
+
+    <Cactus class="cactus-1" variant="full" />
+    <Cactus class="cactus-2" variant="simple" />
+    <Tumbleweed />
+</div>

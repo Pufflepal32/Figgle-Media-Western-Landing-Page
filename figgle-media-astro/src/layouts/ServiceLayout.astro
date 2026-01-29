@@ -1,0 +1,141 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+import PricingSection from '@/components/ui/PricingSection.astro';
+import Schema from '@/components/seo/Schema.astro';
+import { getServicePricing } from '@/data/pricing';
+
+export interface Props {
+  title: string;
+  description: string;
+  service: {
+    title: string;
+    slug: string;
+    description: string;
+    icon: string;
+    features: string[];
+  };
+  parentService?: {
+    title: string;
+    slug: string;
+  };
+}
+
+const { title, description, service, parentService } = Astro.props;
+
+// Get service-specific pricing
+const servicePricing = getServicePricing(service.slug);
+---
+
+<BaseLayout title={title} description={description}>
+  <Schema type="Service" data={service} />
+
+  <section class="service-hero">
+    <div class="container">
+      <h1 class="service-hero-title">{service.title}</h1>
+      <p class="service-hero-description">{service.description}</p>
+    </div>
+  </section>
+
+  <section class="service-content">
+    <div class="container">
+      <slot />
+
+      {service.features && service.features.length > 0 && (
+        <div class="service-features">
+          <h2 class="section-title">What's <span>Included</span></h2>
+          <ul class="features-list">
+            {service.features.map((feature) => (
+              <li class="feature-item">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {servicePricing && (
+    <PricingSection
+      title={`${servicePricing.title} Pricing`}
+      subtitle="Choose the package that fits your business needs"
+      packages={servicePricing.packages}
+    />
+  )}
+
+  <CTABanner
+    title="Ready to Get Started?"
+    description="Let's discuss how our {service.title.toLowerCase()} services can help grow your business."
+    buttonText="Get a Free Quote"
+    buttonHref="/contact"
+  />
+</BaseLayout>
+
+<style>
+  .service-hero {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+    text-align: center;
+  }
+
+  .service-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+    color: var(--color-cream);
+  }
+
+  .service-hero-description {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .service-content {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .service-features {
+    margin-top: var(--spacing-xl);
+  }
+
+  .features-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: var(--spacing-sm);
+    background: var(--color-bg-light);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent-primary);
+  }
+
+  .feature-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .feature-item span {
+    color: var(--color-cream);
+    font-size: 1.05rem;
+  }
+</style>

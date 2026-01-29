@@ -1,0 +1,289 @@
+---
+import PricingCard from './PricingCard.astro';
+import type { PricingPackage, IndustryPricing } from '@/data/pricing';
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  packages?: PricingPackage[];
+  industries?: IndustryPricing[];
+  showTabs?: boolean;
+  defaultIndustry?: string;
+}
+
+const {
+  title = 'Our Pricing',
+  subtitle = 'Straightforward pricing with no hidden fees',
+  packages,
+  industries,
+  showTabs = false,
+  defaultIndustry = 'roofers'
+} = Astro.props;
+
+// Determine which packages to show
+const displayPackages = packages || (industries?.[0]?.packages);
+---
+
+<section class="pricing-section">
+  <div class="container">
+    <h2 class="section-title">{title.split(' ').slice(0, -1).join(' ')} <span>{title.split(' ').slice(-1)}</span></h2>
+    <p class="section-subtitle">{subtitle}</p>
+
+    {showTabs && industries && industries.length > 0 && (
+      <div class="industry-tabs" role="tablist" aria-label="Select your industry">
+        {industries.map((industry, index) => (
+          <button
+            class:list={['tab-button', { active: industry.slug === defaultIndustry }]}
+            role="tab"
+            aria-selected={industry.slug === defaultIndustry ? 'true' : 'false'}
+            aria-controls={`pricing-panel-${industry.slug}`}
+            data-industry={industry.slug}
+            id={`tab-${industry.slug}`}
+          >
+            {industry.title.replace(' Companies', '').replace(' Contractors', '')}
+          </button>
+        ))}
+      </div>
+    )}
+
+    {showTabs && industries ? (
+      <div class="pricing-panels">
+        {industries.map((industry) => (
+          <div
+            class:list={['pricing-panel', { active: industry.slug === defaultIndustry }]}
+            role="tabpanel"
+            id={`pricing-panel-${industry.slug}`}
+            aria-labelledby={`tab-${industry.slug}`}
+            data-industry={industry.slug}
+          >
+            <p class="industry-tagline">{industry.tagline}</p>
+            <div class="pricing-grid">
+              {industry.packages.map((pkg) => (
+                <PricingCard
+                  name={pkg.name}
+                  price={pkg.price}
+                  description={pkg.description}
+                  features={pkg.features}
+                  popular={pkg.popular}
+                  ctaText={pkg.ctaText}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : displayPackages ? (
+      <div class="pricing-grid">
+        {displayPackages.map((pkg) => (
+          <PricingCard
+            name={pkg.name}
+            price={pkg.price}
+            description={pkg.description}
+            features={pkg.features}
+            popular={pkg.popular}
+            ctaText={pkg.ctaText}
+          />
+        ))}
+      </div>
+    ) : null}
+  </div>
+</section>
+
+{showTabs && (
+  <script>
+    // Industry tab switching functionality
+    function initPricingTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const panels = document.querySelectorAll('.pricing-panel');
+
+      tabButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const industry = button.getAttribute('data-industry');
+
+          // Update tab states
+          tabButtons.forEach((btn) => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-selected', 'true');
+
+          // Update panel visibility
+          panels.forEach((panel) => {
+            const panelIndustry = panel.getAttribute('data-industry');
+            if (panelIndustry === industry) {
+              panel.classList.add('active');
+            } else {
+              panel.classList.remove('active');
+            }
+          });
+        });
+
+        // Keyboard navigation
+        button.addEventListener('keydown', (e) => {
+          const buttons = Array.from(tabButtons);
+          const currentIndex = buttons.indexOf(button);
+          let newIndex = currentIndex;
+
+          if (e.key === 'ArrowRight') {
+            newIndex = (currentIndex + 1) % buttons.length;
+          } else if (e.key === 'ArrowLeft') {
+            newIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+          } else if (e.key === 'Home') {
+            newIndex = 0;
+          } else if (e.key === 'End') {
+            newIndex = buttons.length - 1;
+          }
+
+          if (newIndex !== currentIndex) {
+            e.preventDefault();
+            (buttons[newIndex] as HTMLElement).focus();
+            (buttons[newIndex] as HTMLElement).click();
+          }
+        });
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initPricingTabs);
+    // Also initialize for Astro page transitions
+    document.addEventListener('astro:page-load', initPricingTabs);
+  </script>
+)}
+
+<style>
+  .pricing-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .section-title span {
+    color: var(--color-accent-primary);
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .industry-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-lg);
+    padding: 0.5rem;
+    background: var(--color-bg-light);
+    border-radius: 8px;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1.25rem;
+    border: 2px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .tab-button:hover {
+    color: var(--color-cream);
+    background: var(--color-bg-dark);
+  }
+
+  .tab-button.active {
+    background: var(--color-accent-primary);
+    color: var(--color-cream);
+    border-color: var(--color-accent-primary);
+  }
+
+  .tab-button:focus {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  .pricing-panels {
+    position: relative;
+  }
+
+  .pricing-panel {
+    display: none;
+  }
+
+  .pricing-panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .industry-tagline {
+    text-align: center;
+    color: var(--color-accent-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-heading);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    align-items: start;
+  }
+
+  @media (min-width: 1200px) {
+    .pricing-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .industry-tabs {
+      gap: 0.25rem;
+      padding: 0.25rem;
+    }
+
+    .tab-button {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+</style>

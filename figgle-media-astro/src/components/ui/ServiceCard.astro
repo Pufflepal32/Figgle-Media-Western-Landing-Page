@@ -1,0 +1,105 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  href?: string;
+  icon?: string;
+}
+
+const { title, description, href, icon } = Astro.props;
+---
+
+<div class="service-card animate-on-scroll">
+    {icon && (
+      <div class="service-icon" set:html={icon} />
+    )}
+    <h3>{title}</h3>
+    <p>{description}</p>
+    {href && (
+      <a href={href} class="service-link">
+        Learn More
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    )}
+</div>
+
+<style>
+  .service-card {
+    background: var(--color-bg-card);
+    color: var(--color-text-dark);
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 3px solid var(--color-tan);
+    position: relative;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 2px solid var(--color-rust);
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .service-card:hover::before {
+    opacity: 1;
+  }
+
+  .service-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto var(--spacing-sm);
+    color: var(--color-accent-primary);
+  }
+
+  .service-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-bg-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  p {
+    color: var(--color-text-dark);
+    opacity: 0.8;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: gap 0.3s ease;
+  }
+
+  .service-link:hover {
+    gap: 0.75rem;
+  }
+</style>

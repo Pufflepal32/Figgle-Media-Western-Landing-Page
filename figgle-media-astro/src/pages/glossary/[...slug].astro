@@ -1,0 +1,164 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+import { glossaryTerms, getGlossaryTerm } from '@/data/glossary';
+
+export function getStaticPaths() {
+  return glossaryTerms.map((term) => ({
+    params: { slug: term.slug },
+    props: { term },
+  }));
+}
+
+const { term } = Astro.props;
+
+const relatedTerms = term.relatedTerms
+  ? term.relatedTerms.map((slug) => {
+      const fullSlug = `what-is-${slug}`;
+      return glossaryTerms.find((t) => t.slug === fullSlug);
+    }).filter(Boolean)
+  : [];
+---
+
+<PageLayout
+  title={`${term.title} | Figgle Media Glossary`}
+  description={term.description}
+  heroTitle={term.title}
+  heroSubtitle={term.description}
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Glossary', href: '/glossary' },
+    { label: term.term }
+  ]}
+>
+  <section class="glossary-content">
+    <div class="container container-narrow">
+      <article class="term-article" set:html={term.content} />
+
+      {relatedTerms.length > 0 && (
+        <div class="related-terms">
+          <h2>Related Terms</h2>
+          <div class="related-grid">
+            {relatedTerms.map((related) => (
+              <a href={`/glossary/${related?.slug}`} class="related-card">
+                <span class="term-badge">{related?.term}</span>
+                <h3>{related?.title}</h3>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <CTABanner
+    title="Need Help With Your Marketing?"
+    description="Let us handle the technical details while you focus on running your business."
+    buttonText="Get a Free Consultation"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  .glossary-content {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .container-narrow {
+    max-width: 800px;
+  }
+
+  .term-article {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .term-article :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-cream);
+    margin: 2rem 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .term-article :global(h3) {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-cream);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .term-article :global(p) {
+    color: var(--color-text-light);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .term-article :global(ul) {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .term-article :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .term-article :global(strong) {
+    color: var(--color-cream);
+  }
+
+  .related-terms {
+    padding-top: var(--spacing-xl);
+    border-top: 2px solid var(--color-bg-light);
+  }
+
+  .related-terms h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-cream);
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .related-card {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .related-card:hover {
+    border-color: var(--color-accent-primary);
+  }
+
+  .term-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: var(--color-accent-primary);
+    color: var(--color-cream);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  .related-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-cream);
+    margin: 0;
+  }
+</style>

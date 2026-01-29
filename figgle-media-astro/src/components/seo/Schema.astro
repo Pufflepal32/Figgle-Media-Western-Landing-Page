@@ -1,0 +1,73 @@
+---
+export interface Props {
+  type: 'Organization' | 'Service' | 'Article' | 'FAQ' | 'BreadcrumbList';
+  data?: Record<string, unknown>;
+}
+
+const { type, data = {} } = Astro.props;
+const siteURL = Astro.site?.origin || 'https://figglemedia.com';
+
+function generateSchema(type: string, data: Record<string, unknown>) {
+  const schemas: Record<string, object> = {
+    Organization: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Figgle Media",
+      "url": siteURL,
+      "logo": `${siteURL}/images/logo.png`,
+      "description": "Digital marketing agency specializing in SEO, web design, and social media for construction companies.",
+      "telephone": "+1-681-307-7514",
+      "email": "Figglemedia@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      },
+      "sameAs": [],
+      ...data
+    },
+    Service: {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "provider": {
+        "@type": "Organization",
+        "name": "Figgle Media",
+        "url": siteURL
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      ...data
+    },
+    Article: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Figgle Media",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${siteURL}/images/logo.png`
+        }
+      },
+      ...data
+    },
+    FAQ: {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      ...data
+    },
+    BreadcrumbList: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      ...data
+    }
+  };
+
+  return schemas[type] || {};
+}
+
+const schema = generateSchema(type, data);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

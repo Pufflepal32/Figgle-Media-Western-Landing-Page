@@ -1,0 +1,179 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<PageLayout
+  title="Blog | Digital Marketing Tips for Construction Companies"
+  description="Marketing insights, tips, and strategies specifically for construction companies, contractors, and home service businesses."
+  heroTitle="Our Blog"
+  heroSubtitle="Insights, tips, and strategies to help construction companies grow their business online."
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Blog' }
+  ]}
+>
+  <section class="blog-section">
+    <div class="container">
+      {posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="post-card animate-on-scroll">
+              {post.data.category && (
+                <span class="post-category">{post.data.category}</span>
+              )}
+              <h2>{post.data.title}</h2>
+              <p class="post-excerpt">{post.data.description}</p>
+              <div class="post-meta">
+                <span class="post-date">
+                  {post.data.publishDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+              <span class="read-more">
+                Read Article
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="no-posts">
+          <h2>Coming Soon</h2>
+          <p>We're working on some great content for you. Check back soon for marketing tips and insights specifically for construction companies.</p>
+          <p>In the meantime, check out our <a href="/glossary">Marketing Glossary</a> to learn about key digital marketing concepts.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .blog-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+    min-height: 50vh;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .post-card {
+    background: var(--color-bg-card);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border: 3px solid var(--color-tan);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-accent-primary);
+  }
+
+  .post-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--color-accent-primary);
+    color: var(--color-cream);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    align-self: flex-start;
+  }
+
+  .post-card h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--color-bg-dark);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .post-excerpt {
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .post-meta {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .post-date {
+    color: var(--color-text-dark);
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .read-more svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover .read-more svg {
+    transform: translateX(4px);
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: var(--color-bg-light);
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .no-posts h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-cream);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .no-posts p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .no-posts a {
+    color: var(--color-accent-primary);
+    font-weight: 600;
+  }
+
+  .no-posts a:hover {
+    text-decoration: underline;
+  }
+</style>

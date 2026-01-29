@@ -1,0 +1,199 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HeroLandscape from '@/components/western/HeroLandscape.astro';
+import WantedPoster from '@/components/western/WantedPoster.astro';
+import ServiceCard from '@/components/ui/ServiceCard.astro';
+import Button from '@/components/ui/Button.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+import ContactForm from '@/components/ui/ContactForm.astro';
+import PricingSection from '@/components/ui/PricingSection.astro';
+import Schema from '@/components/seo/Schema.astro';
+import { services } from '@/data/services';
+import { industries } from '@/data/industries';
+import { industryPricing } from '@/data/pricing';
+---
+
+<BaseLayout
+  title="Figgle Media | Digital Marketing for Construction Companies"
+  description="Partner with Figgle Media for SEO, web design, and social media marketing tailored specifically for construction companies, roofers, HVAC, plumbers, and more."
+>
+  <Schema type="Organization" />
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <HeroLandscape />
+
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-accent">Digital Marketing</span>
+        Where Your Brand Makes Its Stand
+      </h1>
+      <p class="hero-subtitle">Partner with a posse of creative gunslingers ready to take your construction business to new frontiers. No shortcuts, no snake oil—just results that hit the mark.</p>
+      <div class="hero-cta">
+        <Button href="/contact" variant="primary">Saddle Up</Button>
+        <Button href="/services" variant="secondary">See Our Services</Button>
+      </div>
+    </div>
+
+    <div class="sun-rays"></div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">Our <span>Specialties</span></h2>
+      <p class="section-subtitle">Every brand needs a trusty crew. Here's how we help construction companies grow.</p>
+
+      <div class="services-grid">
+        {services.map((service) => (
+          <ServiceCard
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+            href={`/services/${service.slug}`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries Section -->
+  <section class="industries">
+    <div class="container">
+      <h2 class="section-title">Industries <span>We Serve</span></h2>
+      <p class="section-subtitle">We specialize in marketing for construction and home service companies.</p>
+
+      <div class="industries-grid">
+        {industries.map((industry) => (
+          <a href={`/industries/${industry.slug}`} class="industry-card animate-on-scroll">
+            <h3>{industry.shortTitle}</h3>
+            <span class="industry-link">Learn More →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <PricingSection
+    title="Investment Packages"
+    subtitle="Select your industry to see tailored pricing packages"
+    industries={industryPricing}
+    showTabs={true}
+    defaultIndustry="roofers"
+  />
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 class="section-title">Why Ride <span>With Us?</span></h2>
+          <p>At Figgle Media, we don't believe in cookie-cutter solutions or empty promises. We're a tight-knit crew of digital marketers who treat your brand like it's our own homestead.</p>
+          <p>Whether you're a local contractor looking to dominate your market or a growing company ready to expand your territory, we've got the tools and the know-how to get you there.</p>
+
+          <div class="stats-row">
+            <div class="stat animate-on-scroll">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Dedication</span>
+            </div>
+            <div class="stat animate-on-scroll">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Support</span>
+            </div>
+            <div class="stat animate-on-scroll">
+              <span class="stat-number">Fresh</span>
+              <span class="stat-label">Perspective</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <div class="image-frame">
+            <WantedPoster />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <CTABanner
+    title="Ready to Blaze a New Trail?"
+    description="Don't let your competition outpace you. Partner with Figgle Media and let's build something legendary together."
+    buttonText="Let's Talk Strategy"
+    buttonHref="/contact"
+  />
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2 class="section-title">Drop Us <span>A Line</span></h2>
+      <p class="section-subtitle">Ready to partner up? Send us a message and we'll get back to you faster than a tumbleweed in a windstorm.</p>
+
+      <div class="contact-wrapper">
+        <ContactForm />
+
+        <div class="contact-info">
+          <div class="info-card animate-on-scroll">
+            <h4>Reach Out Directly</h4>
+            <p><strong>Email:</strong> Figglemedia@gmail.com</p>
+            <p><strong>Phone:</strong> (681)-307-7514</p>
+          </div>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .industries {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-dark);
+  }
+
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .industry-card {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .industry-card:hover {
+    border-color: var(--color-accent-primary);
+    transform: translateY(-3px);
+  }
+
+  .industry-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-cream);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .industry-link {
+    color: var(--color-accent-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+</style>

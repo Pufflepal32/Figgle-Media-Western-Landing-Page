@@ -1,0 +1,47 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonicalURL,
+  ogImage = '/images/logo.png',
+  noIndex = false
+} = Astro.props;
+
+const siteURL = Astro.site?.origin || 'https://figglemedia.com';
+const pageURL = canonicalURL || new URL(Astro.url.pathname, siteURL).href;
+const imageURL = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteURL).href;
+const fullTitle = title.includes('Figgle Media') ? title : `${title} | Figgle Media`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={pageURL} />
+
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={pageURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content="Figgle Media" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={pageURL} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+<!-- Additional SEO -->
+<meta name="author" content="Figgle Media" />
+<meta name="generator" content={Astro.generator} />

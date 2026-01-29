@@ -1,0 +1,167 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CTABanner from '@/components/ui/CTABanner.astro';
+import ServiceCard from '@/components/ui/ServiceCard.astro';
+import PricingSection from '@/components/ui/PricingSection.astro';
+import Schema from '@/components/seo/Schema.astro';
+import { getIndustryPricing } from '@/data/pricing';
+
+export interface Props {
+  title: string;
+  description: string;
+  industry: {
+    title: string;
+    slug: string;
+    description: string;
+    challenges: string[];
+    services: Array<{ slug: string; title: string; description?: string }>;
+  };
+  parentService?: {
+    title: string;
+    slug: string;
+  };
+}
+
+const { title, description, industry, parentService } = Astro.props;
+
+// Get industry-specific pricing
+const industryPricing = getIndustryPricing(industry.slug);
+---
+
+<BaseLayout title={title} description={description}>
+  <Schema type="Service" data={{ title: industry.title, description: industry.description }} />
+
+  <section class="industry-hero">
+    <div class="container">
+      <h1 class="industry-hero-title">{title}</h1>
+      <p class="industry-hero-description">{industry.description}</p>
+    </div>
+  </section>
+
+  <section class="industry-content">
+    <div class="container">
+      <slot />
+
+      {industry.challenges && industry.challenges.length > 0 && (
+        <div class="industry-challenges">
+          <h2 class="section-title">Challenges <span>We Solve</span></h2>
+          <div class="challenges-grid">
+            {industry.challenges.map((challenge) => (
+              <div class="challenge-card">
+                <svg class="challenge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <p>{challenge}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {industry.services && industry.services.length > 0 && !parentService && (
+        <div class="industry-services">
+          <h2 class="section-title">Our Services for <span>{industry.title}</span></h2>
+          <div class="services-grid">
+            {industry.services.map((service) => (
+              <ServiceCard
+                title={service.title}
+                description={service.description || `Professional ${service.title.toLowerCase()} tailored for ${industry.title.toLowerCase()}.`}
+                href={`/industries/${industry.slug}/${service.slug}`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {industryPricing && !parentService && (
+    <PricingSection
+      title={`Marketing Packages for ${industry.title}`}
+      subtitle={industryPricing.tagline}
+      packages={industryPricing.packages}
+    />
+  )}
+
+  <CTABanner
+    title={`Ready to Grow Your ${industry.title} Business?`}
+    description="Let's discuss how we can help you attract more customers and dominate your local market."
+    buttonText="Get a Free Consultation"
+    buttonHref="/contact"
+  />
+</BaseLayout>
+
+<style>
+  .industry-hero {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-light) 100%);
+    text-align: center;
+  }
+
+  .industry-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+    color: var(--color-cream);
+  }
+
+  .industry-hero-description {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .industry-content {
+    padding: var(--spacing-xl) 0;
+    background: var(--color-bg-main);
+  }
+
+  .industry-challenges {
+    margin-top: var(--spacing-xl);
+  }
+
+  .challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .challenge-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: var(--spacing-md);
+    background: var(--color-bg-card);
+    border-radius: 8px;
+    border: 2px solid var(--color-tan);
+  }
+
+  .challenge-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+  }
+
+  .challenge-card p {
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .industry-services {
+    margin-top: var(--spacing-xl);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+</style>
