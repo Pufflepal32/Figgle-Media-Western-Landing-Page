@@ -10,6 +10,7 @@ export interface Industry {
   shortTitle: string;
   description: string;
   longDescription: string;
+  image: string;
   challenges: string[];
   services: IndustryService[];
 }
@@ -21,6 +22,7 @@ export const industries: Industry[] = [
     shortTitle: 'Roofers',
     description: 'Digital marketing solutions designed specifically for roofing contractors to generate more leads and grow their business.',
     longDescription: 'The roofing industry is highly competitive, with homeowners often searching online after storm damage or when planning renovations. We help roofing companies stand out in local search results and convert more website visitors into booked jobs.',
+    image: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=800&q=80',
     challenges: [
       'Standing out in a crowded local market',
       'Generating leads during off-peak seasons',
@@ -40,6 +42,7 @@ export const industries: Industry[] = [
     shortTitle: 'HVAC',
     description: 'Marketing strategies for heating and cooling companies to capture emergency calls and seasonal demand.',
     longDescription: 'HVAC companies face unique marketing challenges with seasonal demand fluctuations and emergency service needs. Our marketing strategies help you capture urgent searches while building long-term brand recognition for maintenance contracts.',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80',
     challenges: [
       'Capturing emergency service calls',
       'Managing seasonal demand fluctuations',
@@ -59,6 +62,7 @@ export const industries: Industry[] = [
     shortTitle: 'Plumbers',
     description: 'Get more plumbing leads with marketing that reaches homeowners during emergencies and planned projects.',
     longDescription: 'Plumbers need to be found fast when pipes burst or drains clog. Our marketing strategies ensure your plumbing company shows up at the top of search results when customers need you most, while also promoting your planned service offerings.',
+    image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&q=80',
     challenges: [
       'Being found during plumbing emergencies',
       'Differentiating from competitors on price alone',
@@ -78,6 +82,7 @@ export const industries: Industry[] = [
     shortTitle: 'Electricians',
     description: 'Marketing solutions for electricians to attract residential, commercial, and industrial clients.',
     longDescription: 'Electrical contractors serve diverse markets from residential rewiring to commercial installations. Our marketing strategies help you target the right customers with messaging that builds trust in your expertise and safety record.',
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80',
     challenges: [
       'Reaching both residential and commercial markets',
       'Communicating safety and licensing credentials',
@@ -97,6 +102,7 @@ export const industries: Industry[] = [
     shortTitle: 'General Contractors',
     description: 'Comprehensive marketing for general contractors handling construction, renovation, and project management.',
     longDescription: 'General contractors need marketing that showcases their ability to manage complex projects from start to finish. We help GCs attract quality leads for new construction, major renovations, and commercial projects.',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
     challenges: [
       'Showcasing diverse project capabilities',
       'Attracting larger commercial projects',
@@ -116,6 +122,7 @@ export const industries: Industry[] = [
     shortTitle: 'Remodelers',
     description: 'Marketing that showcases your remodeling transformations and attracts homeowners ready to renovate.',
     longDescription: 'Remodeling contractors thrive on visual proof of their work. Our marketing strategies help you showcase stunning before-and-after transformations that inspire homeowners to start their own renovation projects with your company.',
+    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
     challenges: [
       'Showcasing transformation results visually',
       'Attracting homeowners in the research phase',
@@ -135,6 +142,7 @@ export const industries: Industry[] = [
     shortTitle: 'Landscapers',
     description: 'Digital marketing to help landscapers grow their customer base and book more projects.',
     longDescription: 'Landscaping companies have unique opportunities to showcase their work through stunning visual content. We help landscapers attract residential and commercial clients looking for lawn care, hardscaping, and landscape design services.',
+    image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=800&q=80',
     challenges: [
       'Seasonal business fluctuations',
       'Differentiating from low-cost competitors',
@@ -154,6 +162,7 @@ export const industries: Industry[] = [
     shortTitle: 'Hardscapers',
     description: 'Specialized marketing for hardscape contractors doing patios, retaining walls, and outdoor living spaces.',
     longDescription: 'Hardscaping is a premium service that requires marketing focused on craftsmanship and design. We help hardscape contractors attract homeowners looking to invest in patios, outdoor kitchens, fire pits, and retaining walls.',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
     challenges: [
       'Educating customers on hardscape value',
       'Showcasing premium craftsmanship',
@@ -173,6 +182,7 @@ export const industries: Industry[] = [
     shortTitle: 'Concrete',
     description: 'Marketing solutions for concrete contractors specializing in driveways, foundations, and decorative concrete.',
     longDescription: 'Concrete contractors need marketing that highlights both their technical expertise and decorative capabilities. We help concrete companies attract leads for foundations, driveways, stamped concrete, and commercial flatwork.',
+    image: 'https://images.unsplash.com/photo-1590069261209-f8e9b8642343?w=800&q=80',
     challenges: [
       'Showcasing decorative concrete options',
       'Attracting both residential and commercial projects',
